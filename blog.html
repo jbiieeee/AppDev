@@ -19,30 +19,61 @@
         <p>Loading posts...</p>
     </div>
 
-    <script>
-        async function fetchPosts() {
-            try {
-                const response = await fetch('/api/posts');
-                const posts = await response.json();
-                const container = document.getElementById('posts-container');
-                
-                container.innerHTML = ''; // Clear the loading message
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Our Blog</h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/about">About</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/contact">Contact</a>
+    </nav>
 
-                posts.forEach(post => {
-                    const postElement = document.createElement('div');
-                    postElement.innerHTML = `
-                        <h3>${post.title}</h3>
-                        <p>${post.content}</p>
-                        <hr style="width: 50%">
-                    `;
-                    container.appendChild(postElement);
-                });
-            } catch (error) {
-                console.error('Error fetching posts:', error);
+    <div id="posts-container" style="margin-top: 30px;">
+        <p>Loading posts...</p>
+    </div>
+
+   <script>
+    async function fetchPosts() {
+        try {
+            // Change '/api/posts' to 'post.json' because it's now a file in your root folder
+            const response = await fetch('post.json'); 
+            
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        }
 
-        fetchPosts();
-    </script>
+            const posts = await response.json();
+            const container = document.getElementById('posts-container');
+            
+            container.innerHTML = ''; // Clear the loading message
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.innerHTML = `
+                    <h3>${post.title}</h3>
+                    <p>${post.content}</p>
+                    <hr style="width: 50%">
+                `;
+                container.appendChild(postElement);
+            });
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            document.getElementById('posts-container').innerHTML = '<p>Error loading blog posts.</p>';
+        }
+    }
+
+    fetchPosts();
+</script>
 </body>
+</html>
+</body>
+
 </html>
